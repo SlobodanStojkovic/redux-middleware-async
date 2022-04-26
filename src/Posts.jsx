@@ -4,19 +4,22 @@ import { fetchPosts } from "./actions";
 
 const Posts = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state);
+  const state = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
-  return (
-    <div>
-      {posts.map((post) => {
-        return <h3 key={post.id}>{post.title}</h3>;
-      })}
-    </div>
-  );
+  const renderPosts = () => {
+    if (state.loading) {
+      return <h1>Loading...</h1>;
+    }
+    return state.items.map((post) => {
+      return <h3 key={post.id}>{post.title}</h3>;
+    });
+  };
+
+  return <div>{renderPosts()}</div>;
 };
 
 export default Posts;
